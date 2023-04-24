@@ -1,5 +1,7 @@
-from controllers.user import get_user
+from controllers.auth import login, register
 
 def setup_routes(app):
-    app.router.add_get('/user', get_user)
-    app.router.add_static('/', 'static')
+    app.router.add_post('/auth/login', login)
+    app.router.add_post('/auth/register', register)
+
+    app.router.add_static('/', 'static') # must be last!!!

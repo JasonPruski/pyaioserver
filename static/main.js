@@ -1,5 +1,5 @@
-import { login } from "./js/user.js";
+import { auth } from "./js/auth.js";
 
 $(document).ready(function() {
-    login()
+    $("#auth").click(() => auth());
 });
