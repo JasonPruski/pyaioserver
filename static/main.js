@@ -1,4 +1,3 @@
-import { loggedin } from '/js/data.js';
 import { authentication } from "/js/auth.js";
 
 const data = {

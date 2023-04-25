@@ -1,5 +1,3 @@
-import { loggedin } from '/js/data.js';
-
 const authForm = `
     <input id="username" type="email" placeholder="email" value="" autofocus/><br/>
     <input id="password" type="password" placeholder="password" value=""/><br/>
