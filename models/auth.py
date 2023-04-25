@@ -14,8 +14,8 @@ async def _register(username,password):
     await cur.execute(
         "SELECT id FROM auth WHERE username = %s;",
         (username,))
-    problem = await cur.fetchone()
-    if problem:
+    existing = await cur.fetchone()
+    if existing:
         conn.close()
         return None
     else:
