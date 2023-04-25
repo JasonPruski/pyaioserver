@@ -1,6 +1,10 @@
 import { loggedin } from '/js/data.js';
 import { authentication } from "/js/auth.js";
 
+const data = {
+    loggedin: false
+};
+
 $(document).ready(function() {
     $.ajax({
         type: "GET",
@@ -14,5 +18,5 @@ $(document).ready(function() {
         },
         failure: console.log // remove in production
     });
-    $("#auth").click(() => authentication());
+    $("#auth").click(() => authentication(data));
 });

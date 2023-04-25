@@ -13,36 +13,36 @@ const validate = () => {
   return { username:username, password:password }
 }
 
-export const authentication = () => {
-    if (loggedin) {
-        loggedin = false;
+export const authentication = (data) => {
+    if (data.loggedin) {
+        data.loggedin = false;
         $("#auth-text").text("login");
         // to do, remove cookie, handle on backed?
     } else {
         $("main").html(authForm);
         $("#login").click(() => {
-            const data = validate();
+            const login = validate();
             $.ajax({
                 type: "POST",
                 url: "/auth/login",
-                data: data,
+                data: login,
                 success: (authenticated) => {
                     console.log(authenticated);
-                    loggedin = authenticated;
+                    data.loggedin = authenticated;
                     $("#auth-text").text("logout");
                 },
                 failure: console.log // remove in production
             });
         });
         $("#register").click(() => {
-            const data = validate();
+            const login = validate();
             $.ajax({
                 type: "POST",
                 url: "/auth/register", 
-                data: data,
+                data: login,
                 success: function(authenticated){
                     console.log(authenticated);
-                    loggedin = authenticated;
+                    data.loggedin = authenticated;
                     $("#auth-text").text("logout");
                 },
                 failure: console.log  // remove in production
