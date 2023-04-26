@@ -1,5 +1,5 @@
 from aiohttp import web_response
-from aiohttp_session import get_session
+from aiohttp_session import get_session, new_session
 from models.auth import _register, _login
 # https://docs.aiohttp.org/en/stable/web_reference.html#aiohttp.web.StreamResponse
 # We are encourage using of cookies and set_cookie(), del_cookie() for cookie manipulations.
@@ -23,7 +23,7 @@ async def register(request):
     # this is f---ed up and unsafe!!!!!!!!!!!!!!!!!
     # change to jwt? username & password w/ httponly
     if uid > 0:
-        session = await get_session(request)
+        session = await new_session(request)
         session['uid'] = uid
         return web_response.json_response(True)
     else:
