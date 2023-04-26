@@ -3,7 +3,7 @@ import aiopg
 import bcrypt
 from resources.db_connection import secret
 
-salt = b'+hir%y tw0)&leng:h  bytes256key,'
+salt = bcrypt.gensalt()
 
 async def _register(username,password):
     conn = await aiopg.connect(database=secret['database'],
@@ -17,14 +17,17 @@ async def _register(username,password):
     existing = await cur.fetchone()
     if existing:
         conn.close()
-        return None
+        return 0
     else:
         await cur.execute(
             "INSERT INTO auth (username, password) VALUES (%s,%s) RETURNING id;",
-            (username, bcrypt.hashpw(password.encode('utf-8'), salt).decode("utf-8")))
+            (username, bcrypt.hashpw(password, salt)))
         ret = await cur.fetchone()
         conn.close()
-        return ret
+        if ret:
+            return ret[0]
+        else:
+            return 0
 
 async def _login(username,password):
     conn = await aiopg.connect(database=secret['database'],
@@ -33,8 +36,11 @@ async def _login(username,password):
                                host='127.0.0.1')
     cur = await conn.cursor()
     await cur.execute(
-        "SELECT id FROM auth WHERE username = %s AND password = %s;",
-        (username, bcrypt.hashpw(password.encode('utf-8'), salt).decode("utf-8")))
-    ret= await cur.fetchone()
+        "SELECT id, password FROM auth WHERE username = %s;",
+        (username,))
+    ret = await cur.fetchone()
     conn.close()
-    return ret
+    if ret and ret[1] == bcrypt.hashpw(password, ret[1]):
+        return ret[0]
+    else:
+        return 0
