@@ -40,7 +40,7 @@ async def _login(username,password):
         (username,))
     ret = await cur.fetchone()
     conn.close()
-    if ret and bcrypt.checkpw(password.encode('utf8'), ret[1]):
+    if ret and bcrypt.checkpw(password.encode('utf8'), ret[1].encode('utf8')):
         return ret[0]
     else:
         return 0
