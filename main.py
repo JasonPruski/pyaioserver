@@ -10,6 +10,7 @@ app = web.Application(middlewares=[IndexMiddleware()])
 setup(
     app,
     EncryptedCookieStorage(
-        base64.urlsafe_b64decode( fernet.Fernet.generate_key() )))
+        # base64.urlsafe_b64decode( fernet.Fernet.generate_key() )))
+        b'+hir%y tw0)&leng:h  bytes256key,')) # switch2above? hide in gitignore?
 setup_routes(app)
 web.run_app(app)

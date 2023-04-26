@@ -27,7 +27,9 @@ export const authentication = (data) => {
                 success: (authenticated) => {
                     console.log(authenticated);
                     data.loggedin = authenticated;
-                    $("#auth-text").text("logout");
+                    if (authenticated) {
+                        $("#auth-text").text("logout");
+                    }
                 },
                 failure: console.log // remove in production
             });
@@ -41,7 +43,9 @@ export const authentication = (data) => {
                 success: function(authenticated){
                     console.log(authenticated);
                     data.loggedin = authenticated;
-                    $("#auth-text").text("logout");
+                    if (authenticated) {
+                        $("#auth-text").text("logout");
+                    }
                 },
                 failure: console.log  // remove in production
             });
