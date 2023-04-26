@@ -10,8 +10,8 @@ async def authenticated(request):
     session = await get_session(request)
     # this is f---ed up and unsafe!!!!!!!!!!!!!!!!!
     # change to jwt? username & password w/ httponly
-    print(dir(session))
-    if 'id' in session:
+    if 'uid' in session:
+        print(session['uid'])
         return web_response.json_response(True)
     else:
         return web_response.json_response(False)
@@ -26,9 +26,7 @@ async def register(request):
     # change to jwt? username & password w/ httponly
     if uid > 0:
         session = await get_session(request)
-        print('register', uid)
-        session['id'] = uid
-        print('sessionid', session['id'])
+        session['uid'] = uid
         return web_response.json_response(True)
     else:
         return web_response.json_response(False)
@@ -43,8 +41,8 @@ async def login(request):
     if uid > 0:
         session = await get_session(request)
         print('login', uid)
-        session['id'] = uid
-        print('sessionid', session['id'])
+        session['uid'] = uid
+        print('sessionid', session['uid'])
         return web_response.json_response(True)
     else:
         return web_response.json_response(False)

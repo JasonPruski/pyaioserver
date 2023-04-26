@@ -11,7 +11,7 @@ $(document).ready(function() {
         success: (authenticated) => {
             console.log(authenticated);
             if (authenticated){
-                loggedin = true;
+                data.loggedin = true;
                 $("#auth-text").text("logout");
             }
         },
