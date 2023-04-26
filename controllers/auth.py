@@ -10,6 +10,7 @@ async def authenticated(request):
     session = await get_session(request)
     # this is f---ed up and unsafe!!!!!!!!!!!!!!!!!
     # change to jwt? username & password w/ httponly
+    print(session)
     if 'uid' in session and session['uid'] > 0:
         return web_response.json_response(True)
     else:
