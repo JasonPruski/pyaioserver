@@ -14,7 +14,9 @@ const validate = () => {
 export const authentication = (data) => {
     if (data.loggedin) {
         data.loggedin = false;
-        $("#auth-text").text("login");
+        let authText = $("#auth-text")
+        authText.text("login");
+        authText.css({ "color": "black"});
         // to do, remove cookie, handle on backed?
     } else {
         $("main").html(authForm);
@@ -28,7 +30,9 @@ export const authentication = (data) => {
                     console.log(authenticated);
                     data.loggedin = authenticated;
                     if (authenticated) {
-                        $("#auth-text").text("logout");
+                        let authText = $("#auth-text")
+                        authText.text("logout");
+                        authText.css({ "color": "red"});
                     }
                 },
                 failure: console.log // remove in production
@@ -44,7 +48,9 @@ export const authentication = (data) => {
                     console.log(authenticated);
                     data.loggedin = authenticated;
                     if (authenticated) {
-                        $("#auth-text").text("logout");
+                        let authText = $("#auth-text")
+                        authText.text("logout");
+                        authText.css({ "color": "red"});
                     }
                 },
                 failure: console.log  // remove in production
