@@ -1,4 +1,4 @@
-# python aiohttp server
+# python aiohttp server w/ jquery single page web app
 
 ### to deploy on ubuntu vm
 
