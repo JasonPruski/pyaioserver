@@ -10,7 +10,7 @@ $(document).ready(function() {
         url: "/auth/authenticated",
         success: (authenticated) => {
             console.log(authenticated);
-            if (authenticated){
+            if (authenticated) {
                 data.loggedin = true;
                 $("#auth-text").text("logout");
             }

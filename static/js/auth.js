@@ -13,11 +13,17 @@ const validate = () => {
 
 export const authentication = (data) => {
     if (data.loggedin) {
-        data.loggedin = false;
-        let authText = $("#auth-text")
-        authText.text("login");
-        authText.css({ "color": "black"});
-        // to do, remove cookie, handle on backed?
+        $.ajax({
+            type: "GET",
+            url: "/auth/logout",
+            success: (loggedout) => {
+                console.log(loggedout);
+                data.loggedin = false;
+                $("#auth-text").text("login");
+                data.loggedin = false;
+            },
+            failure: console.log // remove in production
+        });
     } else {
         $("main").html(authForm);
         $("#login").click(() => {
@@ -29,11 +35,7 @@ export const authentication = (data) => {
                 success: (authenticated) => {
                     console.log(authenticated);
                     data.loggedin = authenticated;
-                    if (authenticated) {
-                        let authText = $("#auth-text")
-                        authText.text("logout");
-                        authText.css({ "color": "red"});
-                    }
+                    if (authenticated) $("#auth-text").text("logout");
                 },
                 failure: console.log // remove in production
             });
@@ -47,11 +49,7 @@ export const authentication = (data) => {
                 success: function(authenticated){
                     console.log(authenticated);
                     data.loggedin = authenticated;
-                    if (authenticated) {
-                        let authText = $("#auth-text")
-                        authText.text("logout");
-                        authText.css({ "color": "red"});
-                    }
+                    if (authenticated) $("#auth-text").text("logout");
                 },
                 failure: console.log  // remove in production
             });

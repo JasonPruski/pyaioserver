@@ -11,11 +11,9 @@ async def authenticated(request):
     # this is f---ed up and unsafe!!!!!!!!!!!!!!!!!
     # change to jwt? username & password w/ httponly
     if 'uid' in session:
-        print(session['uid'])
         return web_response.json_response(True)
     else:
         return web_response.json_response(False)
-
 
 async def register(request):
     data = await request.post()
@@ -40,9 +38,12 @@ async def login(request):
     # change to jwt? username & password w/ httponly
     if uid > 0:
         session = await get_session(request)
-        print('login', uid)
         session['uid'] = uid
-        print('sessionid', session['uid'])
         return web_response.json_response(True)
     else:
         return web_response.json_response(False)
+
+async def logout(request):
+    session = await get_session(request)
+    session.close()
+    return web_response.json_response(True)
