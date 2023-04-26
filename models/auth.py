@@ -3,7 +3,7 @@ import aiopg
 import bcrypt
 from resources.db_connection import secret
 
-salt = bcrypt.gensalt()
+salt = b'+hir%y tw0)&leng:h  bytes256key,'
 
 async def _register(username,password):
     conn = await aiopg.connect(database=secret['database'],
