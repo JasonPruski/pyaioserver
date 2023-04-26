@@ -21,7 +21,7 @@ async def _register(username,password):
     else:
         await cur.execute(
             "INSERT INTO auth (username, password) VALUES (%s,%s) RETURNING id;",
-            (username, bcrypt.hashpw(password.encode('utf8'), salt).decode()))
+            (username, bcrypt.hashpw(password.encode('utf8'), salt)))
         ret = await cur.fetchone()
         conn.close()
         if ret:
@@ -40,7 +40,7 @@ async def _login(username,password):
         (username,))
     ret = await cur.fetchone()
     conn.close()
-    if ret and ret[1] == bcrypt.checkpw(password.encode('utf8'), ret[1].encode()):
+    if ret and bcrypt.checkpw(password, bytes(ret[1])):
         return ret[0]
     else:
         return 0
