@@ -1,4 +1,4 @@
-from controllers.auth import authenticated, login, register
+from controllers.auth import authenticated, register, login, logout
 
 def setup_routes(app):
     app.router.add_get('/auth/authenticated', authenticated)
