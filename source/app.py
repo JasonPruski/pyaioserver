@@ -9,7 +9,7 @@ from routes import setup_routes
 app = web.Application(
     middlewares=[
         IndexMiddleware(),
-        aiohttp_session.cookie_storage.EncryptedCookieStorage(
+        EncryptedCookieStorage(
             base64.urlsafe_b64decode( fernet.Fernet.generate_key() ))])
 # setup(
 #     app,
