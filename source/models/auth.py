@@ -20,7 +20,7 @@ async def _register(username,password):
         return 0
     else:
         await cur.execute(
-            "INSERT INTO auth (username, password) VALUES (%s,%s) RETURNING id;",
+            "INSERT INTO auth (username, password, verified) VALUES (%s,%s,false) RETURNING id;",
             (username, bcrypt.hashpw(password.encode('utf8'), salt)))
         ret = await cur.fetchone()
         conn.close()
@@ -44,3 +44,16 @@ async def _login(username,password):
         return ret[0]
     else:
         return 0
+
+async def verify(username):
+    conn = await aiopg.connect(database=secret['database'],
+                               user=secret['user'],
+                               password=secret['password'],
+                               host='127.0.0.1')
+    cur = await conn.cursor()
+    await cur.execute(
+        "UPDATE auth SET verified = true WHERE username = %s;",
+        (username,))
+    ret = await cur.fetchone()
+    conn.close()
+

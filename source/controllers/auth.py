@@ -1,30 +1,48 @@
+import jwt
+from email.message import EmailMessage
+import asyncio
 from aiohttp import web_response
 from aiohttp_session import get_session, new_session
-from models.auth import _register, _login
-# https://docs.aiohttp.org/en/stable/web_reference.html#aiohttp.web.StreamResponse
-# We are encourage using of cookies and set_cookie(), del_cookie() for cookie manipulations.
-# httponly !!!!!!!!!!!!!!!!!!!!!!!!
-# load_session() and save_session()
+import aiosmtplib
+from models.auth import _register, _login, _verified
+from resources.jwt_key import key
 
 async def authenticated(request):
     session = await get_session(request)
-    # this is f---ed up and unsafe!!!!!!!!!!!!!!!!!
-    # change to jwt? username & password w/ httponly
-    if not session[new] and 'uid' in session:
+    if 'jwt' in session:
         return web_response.json_response(True)
     else:
         return web_response.json_response(False)
+
+async def get_user_id(request):
+    session = await get_session(request)
+    if 'jwt' in session:
+        credentials = jwt.decode(encoded, key, algorithms=["HS512"])
+        return await _login(credentials['username'], credentials['password'])
+    else:
+        return 0
 
 async def register(request):
     data = await request.post()
     username = data['username']
     password = data['password']
     uid = await _register(username, password)
-    # this is f---ed up and unsafe!!!!!!!!!!!!!!!!!
-    # change to jwt? username & password w/ httponly
     if uid > 0:
         session = await new_session(request)
-        session['uid'] = uid
+        session['jwt'] = jwt.encode(
+            {'username': username, 'password': password}, 
+            jwt_key.key, algorithm="HS512")
+        # to do: send confirmation email
+        message = EmailMessage()
+        message["From"] = "jasonmilespruski@outlook.com"
+        message["To"] = username
+        message["Subject"] = "http://161.35.100.26:8080/auth/"+jwt.encode(
+            {'username': username}, 
+            key, algorithm="HS512")
+        message.set_content(confirmation_email.content)
+        await asyncio.get_running_loop().run_in_executor(
+            None,
+            aiosmtplib.send(message, hostname="127.0.0.1", port=25))
         return web_response.json_response(True)
     else:
         return web_response.json_response(False)
@@ -34,11 +52,11 @@ async def login(request):
     username = data['username']
     password = data['password']
     uid = await _login(username, password)
-    # this is f---ed up and unsafe!!!!!!!!!!!!!!!!!
-    # change to jwt? username & password w/ httponly
     if uid > 0:
         session = await new_session(request)
-        session['uid'] = uid
+        session['jwt'] = jwt.encode(
+            {'username': username, 'password': password}, 
+            key, algorithm="HS512")
         return web_response.json_response(True)
     else:
         return web_response.json_response(False)
@@ -46,4 +64,12 @@ async def login(request):
 async def logout(request):
     session = await get_session(request)
     session.invalidate()
+    return web_response.json_response(True)
+
+async def verify(request):
+    await _verify(
+        jwt.decode(
+            request.match_info['token'],
+            key,
+            algorithms=["HS256"])['username'])
     return web_response.json_response(True)

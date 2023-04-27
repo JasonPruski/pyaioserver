@@ -15,6 +15,7 @@ app = web.Application(
 #     app,
 #     EncryptedCookieStorage(
 #         ))
-#         # b'+hir%y tw0)&leng:h  bytes256key,')) # switch2above? hide in gitignore?
 setup_routes(app)
-web.run_app(app)
+# ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+# ssl_context.load_cert_chain('domain_srv.crt', 'domain_srv.key')
+web.run_app(app) #, ssl_context=ssl_context)
