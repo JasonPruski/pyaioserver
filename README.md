@@ -39,3 +39,21 @@ you should have retured to the comandline, now just run the app with the followi
 ### note
 
 if you see frequent commits it's because I am testing on a remote server, using git to ferry code back and forth
+
+### current bug
+
+Exception in callback Connection._ready(<weakref at 0...x7f595390c940>) at /home/webapp/pyaioserver/env/lib/python3.10/site-packages/aiopg/connection.py:779
+handle: <Handle Connection._ready(<weakref at 0...x7f595390c940>) at /home/webapp/pyaioserver/env/lib/python3.10/site-packages/aiopg/connection.py:779>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/asyncio/events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "/home/webapp/pyaioserver/env/lib/python3.10/site-packages/aiopg/connection.py", line 837, in _ready
+    self._loop.add_writer(
+  File "/usr/lib/python3.10/asyncio/selector_events.py", line 341, in add_writer
+    self._add_writer(fd, callback, *args)
+  File "/usr/lib/python3.10/asyncio/selector_events.py", line 299, in _add_writer
+    self._selector.modify(fd, mask | selectors.EVENT_WRITE,
+  File "/usr/lib/python3.10/selectors.py", line 390, in modify
+    self._selector.modify(key.fd, selector_events)
+FileNotFoundError: [Errno 2] No such file or directory
+Error handling request
