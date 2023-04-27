@@ -4,7 +4,7 @@ import asyncio
 from aiohttp import web_response
 from aiohttp_session import get_session, new_session
 import aiosmtplib
-from models.auth import _register, _login, _verified
+from models.auth import _register, _login, _verify
 from resources.jwt_key import key
 
 async def authenticated(request):
