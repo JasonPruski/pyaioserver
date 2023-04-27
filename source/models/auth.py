@@ -45,7 +45,7 @@ async def _login(username,password):
     else:
         return 0
 
-async def verify(username):
+async def _verified(username):
     conn = await aiopg.connect(database=secret['database'],
                                user=secret['user'],
                                password=secret['password'],
